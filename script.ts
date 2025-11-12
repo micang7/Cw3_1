@@ -1,8 +1,18 @@
-const input = document.querySelector("#capital-input");
-const button = document.querySelector("button");
-const tbody = document.querySelector("tbody");
+interface Country {
+  name: {
+    common: string;
+  };
+  capital?: string[];
+  population?: number;
+  region?: string;
+  subregion?: string;
+}
 
-button.addEventListener("click", async (e) => {
+const input = document.querySelector("#capital-input") as HTMLInputElement;
+const button = document.querySelector("button") as HTMLButtonElement;
+const tbody = document.querySelector("tbody") as HTMLTableSectionElement;
+
+button.addEventListener("click", async (e: MouseEvent) => {
   e.preventDefault();
 
   showLoadingPopup("Pobieranie danych...");
@@ -14,7 +24,7 @@ button.addEventListener("click", async (e) => {
       `https://restcountries.com/v3.1/${capital ? `capital/${capital}` : "all?fields=name,capital,population,region,subregion"}`,
     );
     if (resp.ok) {
-      const data = await resp.json();
+      const data: Country[] = await resp.json();
       // console.log(data);
       let rows = "";
       data.forEach((country) => {
@@ -33,13 +43,13 @@ button.addEventListener("click", async (e) => {
       alert("Nie udało się pobrać danych z API.");
     }
   } catch (error) {
-    alert(error?.message || "Nieznany błąd.");
+    alert(error instanceof Error ? error.message : "Nieznany błąd.");
   } finally {
     hideLoadingPopup();
   }
 });
 
-function showLoadingPopup(title) {
+function showLoadingPopup(title: string) {
   const popup = document.createElement("div");
   popup.classList.add("loading-popup");
   popup.textContent = title;
