@@ -5,10 +5,10 @@ interface Country {
   capital?: string[];
   population?: number;
   region?: string;
-  subregion?: string;
+  language?: Record<string, string>;
 }
 
-const input = document.querySelector("#capital-input") as HTMLInputElement;
+const input = document.querySelector("#country-input") as HTMLInputElement;
 const button = document.querySelector("button") as HTMLButtonElement;
 const tbody = document.querySelector("tbody") as HTMLTableSectionElement;
 
@@ -17,11 +17,11 @@ button.addEventListener("click", async (e: MouseEvent) => {
 
   showLoadingPopup("Pobieranie danych...");
 
-  const capital = input.value.trim();
+  const country = input.value.trim();
 
   try {
     const resp = await fetch(
-      `https://restcountries.com/v3.1/${capital ? `capital/${capital}` : "all?fields=name,capital,population,region,subregion"}`,
+      `https://restcountries.com/v3.1/${country ? `name/${country}` : "all?fields=name,capital,population,region,languages"}`,
     );
     if (resp.ok) {
       const data: Country[] = await resp.json();
@@ -33,7 +33,7 @@ button.addEventListener("click", async (e: MouseEvent) => {
         <td>${country.capital?.join(", ") || "-"}</td>
         <td>${country.population || "0"}</td>
         <td>${country.region || "-"}</td>
-        <td>${country.subregion || "-"}</td>
+        <td>${Object.values(country.languages).join(", ") || "-"}</td>
       </tr>`;
         tbody.innerHTML = rows;
       });

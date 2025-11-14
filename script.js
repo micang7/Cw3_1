@@ -1,4 +1,4 @@
-const input = document.querySelector("#capital-input");
+const input = document.querySelector("#country-input");
 const button = document.querySelector("button");
 const tbody = document.querySelector("tbody");
 
@@ -7,11 +7,11 @@ button.addEventListener("click", async (e) => {
 
   showLoadingPopup("Pobieranie danych...");
 
-  const capital = input.value.trim();
+  const country = input.value.trim();
 
   try {
     const resp = await fetch(
-      `https://restcountries.com/v3.1/${capital ? `capital/${capital}` : "all?fields=name,capital,population,region,subregion"}`,
+      `https://restcountries.com/v3.1/${country ? `name/${country}` : "all?fields=name,capital,population,region,languages"}`,
     );
     if (resp.ok) {
       const data = await resp.json();
@@ -23,7 +23,7 @@ button.addEventListener("click", async (e) => {
         <td>${country.capital?.join(", ") || "-"}</td>
         <td>${country.population || "0"}</td>
         <td>${country.region || "-"}</td>
-        <td>${country.subregion || "-"}</td>
+        <td>${Object.values(country.languages).join(", ") || "-"}</td>
       </tr>`;
         tbody.innerHTML = rows;
       });
