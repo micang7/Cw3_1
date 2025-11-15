@@ -15,20 +15,19 @@
         id="country-input"
         placeholder="Wyszukaj według nazwy..."
       />
-      <button>Pobierz dane</button>
+      <button id="country-btn">Wyszukaj po nazwie</button>
+      <label for="region-input">Region: </label>
+      <select id="region-input">
+        <option value="" selected>Wybierz region...</option>
+        <option value="Africa">Africa</option>
+        <option value="Americas">Americas</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Oceania">Oceania</option>
+      </select>
+      <button id="region-btn">Wyszukaj po regionie</button>
     </form>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Capital</th>
-          <th>Population</th>
-          <th>Region</th>
-          <th>Languages</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <table></table>
     <script src="script.js"></script>
   </body>
 </html>
