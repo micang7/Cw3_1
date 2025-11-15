@@ -9,25 +9,27 @@
   </head>
   <body>
     <form>
-      <label for="country-input">Nazwa kraju zawiera: </label>
+      <label for="capital-input">Stolica zawiera: </label>
       <input
         type="text"
-        id="country-input"
-        placeholder="Wyszukaj według nazwy..."
+        id="capital-input"
+        placeholder="Wyszukaj według stolicy..."
       />
-      <button id="country-btn">Wyszukaj po nazwie</button>
-      <label for="region-input">Region: </label>
-      <select id="region-input">
-        <option value="" selected>Wybierz region...</option>
-        <option value="Africa">Africa</option>
-        <option value="Americas">Americas</option>
-        <option value="Asia">Asia</option>
-        <option value="Europe">Europe</option>
-        <option value="Oceania">Oceania</option>
-      </select>
-      <button id="region-btn">Wyszukaj po regionie</button>
+      <button>Pobierz dane</button>
     </form>
-    <table></table>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Capital</th>
+          <th>Population</th>
+          <th>Region</th>
+          <th>Subregion</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="details"></div>
     <script src="script.js"></script>
   </body>
 </html>

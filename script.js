@@ -1,99 +1,38 @@
-const input = document.querySelector("#country-input");
-const regionInput = document.querySelector("#region-input");
-const country_btn = document.querySelector("#country-btn");
-const region_btn = document.querySelector("#region-btn");
-const table = document.querySelector("table");
+const input = document.querySelector("#capital-input");
+const button = document.querySelector("button");
+const tbody = document.querySelector("tbody");
+const details = document.querySelector("#details");
 
-country_btn.addEventListener("click", async (e) => {
+button.addEventListener("click", async (e) => {
   e.preventDefault();
 
   showLoadingPopup("Pobieranie danych...");
 
-  const country = input.value.trim();
+  const capital = input.value.trim();
 
   try {
     const resp = await fetch(
-      `https://restcountries.com/v3.1/${
-        country
-          ? `name/${country}`
-          : "all?fields=name,capital,population,region,languages"
-      }`
+      `https://restcountries.com/v3.1/${capital ? `capital/${capital}` : "all?fields=name,capital,population,region,subregion,currencies,flags"}`,
     );
-    table.innerHTML = `<thead>
-      <tr>
-        <th>Name</th>
-        <th>Capital</th>
-        <th>Population</th>
-        <th>Region</th>
-        <th>Languages</th>
-      </tr>
-    </thead>`;
     if (resp.ok) {
       const data = await resp.json();
       // console.log(data);
-      let rows = "";
       data.forEach((country) => {
-        rows += `<tr>
-        <td>${country.name.common}</td>
+        const trow = document.createElement("tr");
+        trow.innerHTML = `<td>${country.name.common}</td>
         <td>${country.capital?.join(", ") || "-"}</td>
         <td>${country.population || "0"}</td>
         <td>${country.region || "-"}</td>
-        <td>${Object.values(country.languages).join(", ") || "-"}</td>
-      </tr>`;
-      });
-      table.innerHTML += `<tbody>${rows}</tbody>`;
-    } else if (resp.status === 404) {
-      table.innerHTML += `<tbody><tr><td colspan="5" style="text-align:center">Brak wyników wyszukiwania</td></tr></tbody>`;
-    } else {
-      alert("Nie udało się pobrać danych z API.");
-    }
-  } catch (error) {
-    alert(error?.message || "Nieznany błąd.");
-  } finally {
-    hideLoadingPopup();
-  }
-});
-
-region_btn.addEventListener("click", async (e) => {
-  e.preventDefault();
-
-  showLoadingPopup("Pobieranie danych...");
-
-  const region = regionInput.value;
-
-  try {
-    const resp = await fetch(
-      `https://restcountries.com/v3.1/${
-        region
-          ? `region/${region}`
-          : "all?fields=name,capital,population,subregion"
-      }`
-    );
-    table.innerHTML = `<thead>
-      <tr>
-        <th>Name</th>
-        <th>Capital</th>
-        <th>Population</th>
-        <th>Subregion</th>
-      </tr>
-    </thead>`;
-    if (resp.ok) {
-      const data = await resp.json();
-      // console.log(data);
-      let rows = "";
-      data
-        .toSorted((a, b) => a.name.common.localeCompare(b.name.common))
-        .forEach((country) => {
-          rows += `<tr>
-        <td>${country.name.common}</td>
-        <td>${country.capital?.join(", ") || "-"}</td>
-        <td>${country.population || "0"}</td>
-        <td>${country.subregion || "-"}</td>
-      </tr>`;
+        <td>${country.subregion || "-"}</td>`;
+        tbody.appendChild(trow);
+        trow.addEventListener("click", () => {
+          details.innerHTML = `<h3>${country.name.common}</h3>
+          <p>Waluta: ${Object.keys(country.currencies ?? {}).join(", ")}</p>
+          <img src="${country.flags?.png}" alt="flaga"/>`;
         });
-      table.innerHTML += `<tbody>${rows}</tbody>`;
+      });
     } else if (resp.status === 404) {
-      table.innerHTML += `<tbody><tr><td colspan="5" style="text-align:center">Brak wyników wyszukiwania</td></tr></tbody>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center">Brak wyników wyszukiwania</td></tr>`;
     } else {
       alert("Nie udało się pobrać danych z API.");
     }
